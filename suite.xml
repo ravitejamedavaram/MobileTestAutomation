@@ -11,4 +11,37 @@
             <class name="myApp.MainTest"></class>
         </classes>
     </test>
+
+    <test name="2.RealDevicee___With___APP">
+        <parameter name="deviceId" value="TA99304FOU"/>
+        <parameter name="deviceName" value="abcd"/>
+        <parameter name="platformName" value="Android"/>
+        <parameter name="version" value="6.0"/>
+        <parameter name="testType" value="App"/>
+        <classes>
+            <class name="myApp.MainTest"></class>
+        </classes>
+    </test>
+
+    <test name="3.Nexus_5X_API_25_TEST___With___WEB">
+        <parameter name="deviceId" value="emulator-5554"/>
+        <parameter name="deviceName" value="Nexus_5X_API_25_TEST"/>
+        <parameter name="platformName" value="Android"/>
+        <parameter name="version" value="7.1.1"/>
+        <parameter name="testType" value="WEB"/>
+        <classes>
+            <class name="myApp.MainTest"></class>
+        </classes>
+    </test>
+
+    <test name="4.RealDevicee___With___WEB">
+        <parameter name="deviceId" value="TA99304FOU"/>
+        <parameter name="deviceName" value="abcd"/>
+        <parameter name="platformName" value="Android"/>
+        <parameter name="version" value="6.0"/>
+        <parameter name="testType" value="Web"/>
+        <classes>
+            <class name="myApp.MainTest"></class>
+        </classes>
+    </test>
 </suite>

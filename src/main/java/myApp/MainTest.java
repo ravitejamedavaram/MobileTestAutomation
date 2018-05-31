@@ -12,6 +12,7 @@ import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
@@ -28,7 +29,7 @@ public class MainTest {
 
 
     public AppiumDriver driver;
-    public String hostURL = "http://localhost:4723/wd/hub";
+    public String hostURL = "http://localhost:4444/wd/hub";
 
     @Test
     @Parameters({"deviceId", "deviceName", "platformName", "version", "testType"})
@@ -41,11 +42,12 @@ public class MainTest {
         capabilities.setCapability(MobileCapabilityType.VERSION, version);
         switch (testType.toUpperCase()){
             case "APP":
-                capabilities.setCapability("appPackage", "<Package Name>");
-                capabilities.setCapability("appActivity", "<Main Activity Name>");
-                capabilities.setCapability(MobileCapabilityType.APP, "<path to APK>");
+                capabilities.setCapability("appPackage", "io.appium.android.apis");
+                capabilities.setCapability("appActivity", "io.appium.android.apis.ApiDemos");
+                capabilities.setCapability(MobileCapabilityType.APP, "apks/ApiDemos-debug.apk");
                 url = new URL(hostURL);
                 driver = new AndroidDriver(url, capabilities);
+                driver.manage().timeouts().implicitlyWait(30L,TimeUnit.SECONDS);
                 testNativeApp();
                 break;
             case "WEB":
@@ -53,6 +55,7 @@ public class MainTest {
                 capabilities.setCapability("noReset", true);
                 url = new URL(hostURL);
                 driver = new AndroidDriver(url, capabilities);
+
                 testMobileWebApp();
                 break;
             default:
@@ -62,10 +65,24 @@ public class MainTest {
 
     public void testNativeApp() throws Exception {
 
+        driver.findElement(By.xpath("//android.widget.TextView[@content-desc='Views']")).click();
+        driver.findElement(By.xpath("//android.widget.TextView[@content-desc='Drag and Drop']")).click();
+
+
+        MobileElement element1 = (MobileElement) driver.findElement(By.id("io.appium.android.apis:id/drag_dot_1"));
+        MobileElement element2 = (MobileElement) driver.findElement(By.id("io.appium.android.apis:id/drag_dot_3"));
+
+        TouchAction touchActions = new TouchAction(driver);
+        touchActions.longPress(element1).moveTo(element2).release().perform();
+
+        Thread.sleep(3000);
     }
 
     public void testMobileWebApp() throws Exception {
-
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        driver.get("http://appium.io/");
+        driver.findElement(By.xpath("//button[@data-target='#bs-example-navbar-collapse-1']")).click();
+        driver.findElement(By.xpath("//a[text()='Documentation']")).click();
     }
 
     @AfterTest
